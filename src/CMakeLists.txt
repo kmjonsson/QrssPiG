@@ -3,6 +3,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
 add_definitions(-std=c++11)
 
 # Look for optional packages
+find_package(LibAirSpy)
+if (LIBAIRSPY_FOUND)
+	include_directories(${LIBAIRSPY_INCLUDE_DIRS})
+endif (LIBAIRSPY_FOUND)
+
+find_package(LibAirSpyHF)
+if (LIBAIRSPYHF_FOUND)
+	include_directories(${LIBAIRSPYHF_INCLUDE_DIRS})
+endif (LIBAIRSPYHF_FOUND)
+
 find_package(LibAlsa)
 if (LIBALSA_FOUND)
 	include_directories(${LIBALSA_INCLUDE_DIRS})
@@ -12,6 +22,11 @@ find_package(LibHackRF)
 if (LIBHACKRF_FOUND)
 	include_directories(${LIBHACKRF_INCLUDE_DIRS})
 endif (LIBHACKRF_FOUND)
+
+find_package(LibLimeSuite)
+if (LIBLIMESUITE_FOUND)
+	include_directories(${LIBLIMESUITE_INCLUDE_DIRS})
+endif (LIBLIMESUITE_FOUND)
 
 find_package(LibRtlSdr)
 if (LIBRTLSDR_FOUND)
@@ -71,6 +86,16 @@ target_link_libraries(qrsspig yaml-cpp)
 target_link_libraries(qrsspig fftw3f)
 target_link_libraries(qrsspig gd)
 
+if (LIBAIRSPY_FOUND)
+	target_link_libraries(qrsspig ${LIBAIRSPY_LIBRARY})
+	set(HAVE_LIBAIRSPY 1)
+endif (LIBAIRSPY_FOUND)
+
+if (LIBAIRSPYHF_FOUND)
+	target_link_libraries(qrsspig ${LIBAIRSPYHF_LIBRARY})
+	set(HAVE_LIBAIRSPYHF 1)
+endif (LIBAIRSPYHF_FOUND)
+
 if (LIBALSA_FOUND)
 	target_link_libraries(qrsspig ${LIBALSA_LIBRARY})
 	set(HAVE_LIBALSA 1)
@@ -80,6 +105,11 @@ if (LIBHACKRF_FOUND)
 	target_link_libraries(qrsspig ${LIBHACKRF_LIBRARY})
 	set(HAVE_LIBHACKRF 1)
 endif (LIBHACKRF_FOUND)
+
+if (LIBLIMESUITE_FOUND)
+	target_link_libraries(qrsspig ${LIBLIMESUITE_LIBRARY})
+	set(HAVE_LIBLIMESUITE 1)
+endif (LIBLIMESUITE_FOUND)
 
 if (LIBRTLSDR_FOUND)
 	target_link_libraries(qrsspig ${LIBRTLSDR_LIBRARY})
