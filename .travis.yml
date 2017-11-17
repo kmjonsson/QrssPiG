@@ -17,6 +17,7 @@ addons:
       - libfreetype6-dev
       - libasound-dev
       - libhackrf-dev
+      - liblimesuite-dev
       - librtlsdr-dev
       - libusb-1.0-0-dev
       - librtfilter-dev
@@ -25,6 +26,8 @@ addons:
 
 before_install:
   - ./install-libhackrf.sh
+  - ./install-libairspy.sh
+  - ./install-libairspyhf+.sh
 
 script:
   - mkdir -p build && cd build && cmake .. && cmake --build .
