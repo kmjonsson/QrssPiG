@@ -63,6 +63,14 @@ endif (LIBCURL_FOUND)
 
 list(APPEND QRSSPIG_SOURCES main.cpp QrssPiG.cpp QGInputDevice.cpp QGInputStdIn.cpp QGProcessor.cpp QGImage.cpp QGUploader.cpp QGUploaderLocal.cpp)
 
+if (LIBAIRSPY_FOUND)
+	list(APPEND QRSSPIG_SOURCES QGInputAirSpy.cpp)
+endif (LIBAIRSPY_FOUND)
+
+if (LIBAIRSPYHF_FOUND)
+	list(APPEND QRSSPIG_SOURCES QGInputAirSpyHF.cpp)
+endif (LIBAIRSPYHF_FOUND)
+
 if (LIBALSA_FOUND)
 	list(APPEND QRSSPIG_SOURCES QGInputAlsa.cpp)
 endif (LIBALSA_FOUND)
@@ -70,6 +78,14 @@ endif (LIBALSA_FOUND)
 if (LIBHACKRF_FOUND)
 	list(APPEND QRSSPIG_SOURCES QGInputHackRF.cpp)
 endif (LIBHACKRF_FOUND)
+
+if (LIBLIMESUITE_FOUND)
+	list(APPEND QRSSPIG_SOURCES QGInputLime.cpp)
+endif (LIBLIMESUITE_FOUND)
+
+if (LIBOSMOSDR_FOUND)
+	list(APPEND QRSSPIG_SOURCES QGInputOsmoSdr.cpp)
+endif (LIBOSMOSDR_FOUND)
 
 if (LIBRTLSDR_FOUND)
 	list(APPEND QRSSPIG_SOURCES QGInputRtlSdr.cpp)
