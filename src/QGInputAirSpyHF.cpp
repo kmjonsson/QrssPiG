@@ -3,6 +3,12 @@
 #include <iostream>
 #include <stdexcept>
 
+std::vector<std::string> QGInputAirSpyHF::listDevices() {
+	std::vector<std::string> list;
+
+	return list;
+}
+
 QGInputAirSpyHF::QGInputAirSpyHF(const YAML::Node &config): QGInputDevice(config) {
 }
 

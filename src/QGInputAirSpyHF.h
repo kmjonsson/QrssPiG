@@ -6,6 +6,8 @@
 
 class QGInputAirSpyHF: public QGInputDevice {
 public:
+	static std::vector<std::string> listDevices();
+
 	QGInputAirSpyHF(const YAML::Node &config);
 	~QGInputAirSpyHF();
 
