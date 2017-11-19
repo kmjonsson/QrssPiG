@@ -8,6 +8,7 @@
 #cmakedefine HAVE_LIBALSA
 #cmakedefine HAVE_LIBHACKRF
 #cmakedefine HAVE_LIBLIMESUITE
+#cmakedefine HAVE_LIBOSMOSDR
 #cmakedefine HAVE_LIBRTLSDR
 #cmakedefine HAVE_LIBRTFILTER
 #cmakedefine HAVE_LIBLIQUIDSDR
