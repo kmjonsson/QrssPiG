@@ -28,6 +28,11 @@ if (LIBLIMESUITE_FOUND)
 	include_directories(${LIBLIMESUITE_INCLUDE_DIRS})
 endif (LIBLIMESUITE_FOUND)
 
+find_package(LibOsmoSdr)
+if (LIBOSMOSDR_FOUND)
+	include_directories(${LIBOSMOSDR_INCLUDE_DIRS})
+endif (LIBOSMOSDR_FOUND)
+
 find_package(LibRtlSdr)
 if (LIBRTLSDR_FOUND)
 	include_directories(${LIBRTLSDR_INCLUDE_DIRS})
@@ -110,6 +115,11 @@ if (LIBLIMESUITE_FOUND)
 	target_link_libraries(qrsspig ${LIBLIMESUITE_LIBRARY})
 	set(HAVE_LIBLIMESUITE 1)
 endif (LIBLIMESUITE_FOUND)
+
+if (LIBOSMOSDR_FOUND)
+	target_link_libraries(qrsspig ${LIBOSMOSDR_LIBRARY})
+	set(HAVE_LIBOSMOSDR 1)
+endif (LIBOSMOSDR_FOUND)
 
 if (LIBRTLSDR_FOUND)
 	target_link_libraries(qrsspig ${LIBRTLSDR_LIBRARY})
