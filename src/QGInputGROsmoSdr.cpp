@@ -6,6 +6,9 @@
 std::vector<std::string> QGInputGROsmoSdr::listDevices() {
 	std::vector<std::string> list;
 
+	osmosdr::devices_t devices = osmosdr::device::find();
+	for (auto &device: devices) list.push_back(device.to_string());
+
 	return list;
 }
 
