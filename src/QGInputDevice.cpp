@@ -21,6 +21,10 @@
 #include "QGInputAlsa.h"
 #endif // HAVE_LIBALSA
 
+#ifdef HAVE_LIBGROSMOSDR
+#include "QGInputGROsmoSdr.h"
+#endif // HAVE_LIBGROSMOSDR
+
 #ifdef HAVE_LIBHACKRF
 #include "QGInputHackRF.h"
 #endif // HAVE_LIBHACKRF
@@ -28,10 +32,6 @@
 #ifdef HAVE_LIBLIMESUITE
 #include "QGInputLime.h"
 #endif // HAVE_LIBLIMESUITE
-
-#ifdef HAVE_LIBOSMOSDR
-#include "QGInputOsmoSdr.h"
-#endif // HAVE_LIBOSMOSDR
 
 #ifdef HAVE_LIBRTLSDR
 #include "QGInputRtlSdr.h"
@@ -129,6 +129,11 @@ void QGInputDevice::ListDevices() {
     if (list.size())
 	    for (auto &s: list) std::cout << "Alsa:\t\t" << s << std::endl;
 #endif //HAVE_LIBALSA
+#ifdef HAVE_LIBGROSMOSDR
+    list = QGInputGROsmoSdr::listDevices();
+    if (list.size())
+	    for (auto &s: list) std::cout << "GROsmoSdr:\t" << s << std::endl;
+#endif //HAVE_LIBGROSMOSDR
 #ifdef HAVE_LIBHACKRF
     list = QGInputHackRF::listDevices();
     if (list.size())
@@ -139,11 +144,6 @@ void QGInputDevice::ListDevices() {
     if (list.size())
 	    for (auto &s: list) std::cout << "Lime:\t\t" << s << std::endl;
 #endif //HAVE_LIBLIMESUITE
-#ifdef HAVE_LIBOSMOSDR
-    list = QGInputOsmoSdr::listDevices();
-    if (list.size())
-	    for (auto &s: list) std::cout << "OsmoSdr:\t" << s << std::endl;
-#endif //HAVE_LIBOSMOSDR
 #ifdef HAVE_LIBRTLSDR
     list = QGInputRtlSdr::listDevices();
     if (list.size())

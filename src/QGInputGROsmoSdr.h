@@ -2,14 +2,14 @@
 
 #include "QGInputDevice.h"
 
-#include <osmosdr.h>
+#include <osmosdr/device.h>
 
-class QGInputOsmoSdr: public QGInputDevice {
+class QGInputGROsmoSdr: public QGInputDevice {
 public:
 	static std::vector<std::string> listDevices();
 
-	QGInputOsmoSdr(const YAML::Node &config);
-	~QGInputOsmoSdr();
+	QGInputGROsmoSdr(const YAML::Node &config);
+	~QGInputGROsmoSdr();
 
 private:
 	void _startDevice();
