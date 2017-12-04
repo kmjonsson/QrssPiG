@@ -15,7 +15,7 @@
 QGProcessor::QGProcessor(const YAML::Node &config) {
 	unsigned int iSampleRate = 48000;
 
-	_sampleRate = 6000;
+	_sampleRate = 0;
 	_chunkSize = 32;
 	_N = 2048;
 	_overlap = (3 * _N) / 4;
@@ -53,6 +53,10 @@ QGProcessor::QGProcessor(const YAML::Node &config) {
 		_sampleRate = iSampleRate / _rate;
 	}
 
+	if (_sampleRate == 0) {
+		_sampleRate = iSampleRate;
+	}
+
 	_inputIndex = 0;
 	// Add provision to add a full chunksize when only one sample left before reaching N. If resampling, will be smaller in worst case
 	_input.reset(new std::complex<float>[_N + _chunkSize - 1]);
@@ -65,7 +69,6 @@ QGProcessor::QGProcessor(const YAML::Node &config) {
 		_rtFilterResampler = rtf_create_downsampler(1, RTF_CFLOAT, (unsigned int)_rate);
 #else
 		_counter = 0;
-		_counterLimit = (unsigned int)floor(_rate);
 #endif // HAVE_LIBRTFILTER
 #endif // HAVE_LIBLIQUIDSDR
 	}
@@ -87,17 +90,19 @@ QGProcessor::~QGProcessor() {
 	fftwf_free(_fftIn);
 	fftwf_free(_fftOut);
 
+	if (_rate != 1.0) {
 #ifdef HAVE_LIBLIQUIDSDR
-	resamp_crcf_destroy(_liquidSdrResampler);
+		resamp_crcf_destroy(_liquidSdrResampler);
 #else
 #ifdef HAVE_LIBRTFILTER
-	rtf_destroy_filter(_rtFilterResampler);
+		rtf_destroy_filter(_rtFilterResampler);
 #endif // HAVE_LIBRTFILTER
 #endif // HAVE_LIBLIQUIDSDR
+	}
 }
 
-void QGProcessor::setCb(std::function<void(const std::complex<float>*)>cb) {
-    _cb = cb;
+void QGProcessor::addCb(std::function<void(const std::complex<float>*)>cb) {
+	_cbs.push_back(cb);
 }
 
 void QGProcessor::addIQ(const std::complex<float> *iq) {
@@ -126,9 +131,9 @@ unsigned int QGProcessor::_resample(const std::complex<float> *in, std::complex<
 #ifdef HAVE_LIBRTFILTER
 	outSize = rtf_filter(_rtFilterResampler, in, out, _chunkSize);
 #else
-	for (int i = 0; i < _chunkSize; i++) { // Reuse i, so outer while loop will run only once
+	for (unsigned int i = 0; i < _chunkSize; i++) { // Reuse i, so outer while loop will run only once
 		if (!_counter++) out[outSize++] = in[i];
-		if (_counter >= _counterLimit) _counter = 0;
+		if (_counter >= _rate) _counter = 0;
 	}
 #endif // HAVE_LIBRTFILTER
 #endif // HAVE_LIBLIQUIDSDR
@@ -140,5 +145,5 @@ void QGProcessor::_fft() {
 	for (int i = 0; i < _N; i++) _fftIn[i] = _input.get()[i] * _hannW[i / 2];
 	fftwf_execute(_plan);
 
-	_cb(_fftOut);
+	for (auto& cb: _cbs) cb(_fftOut);
 }

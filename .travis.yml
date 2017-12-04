@@ -26,9 +26,9 @@ addons:
       - libcurl4-openssl-dev
 
 before_install:
-  - ./install-libhackrf.sh
-  - ./install-libairspy.sh
-  - ./install-libairspyhf+.sh
+  - ./scripts/install-libairspy.sh
+  - ./scripts/install-libairspyhf+.sh
+  - ./scripts/install-libhackrf.sh
 
 script:
   - mkdir -p build && cd build && cmake .. && cmake --build .

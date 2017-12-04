@@ -5,6 +5,7 @@
 #include <complex> // Must be included before fftw3
 #include <functional>
 #include <memory>
+#include <vector>
 
 #include <fftw3.h>
 #include <yaml-cpp/yaml.h>
@@ -22,12 +23,15 @@ public:
 	QGProcessor(const YAML::Node &config);
 	~QGProcessor();
 
-	void setCb(std::function<void(const std::complex<float>*)>cb);
+	void addCb(std::function<void(const std::complex<float>*)>cb);
 
 	void addIQ(const std::complex<float> *iq);
 
 	unsigned int sampleRate() { return _sampleRate; };
 	unsigned int chunkSize() { return _chunkSize; };
+	int fftSize() { return _N; };
+	int fftOverlap() { return _overlap; };
+	float downsamplingRate() { return _rate; };
 
 private:
 	unsigned int _resample(const std::complex<float> *in, std::complex<float> *out);
@@ -51,7 +55,6 @@ private:
 	hfilter _rtFilterResampler;
 #else
 	unsigned int _counter;
-	unsigned int _counterLimit;
 #endif // HAVE_LIBRTFILTER
 #endif // HAVE_LIBLIQUIDSDR
 
@@ -63,5 +66,5 @@ private:
 	std::complex<float> *_fftIn;
 	std::complex<float> *_fftOut;
 
-	std::function<void(const std::complex<float>*)> _cb;
+	std::vector<std::function<void(const std::complex<float>*)>> _cbs;
 };

@@ -193,7 +193,7 @@ void QGImage::addLine(const std::complex<float> *fft) {
 	for (int i = _fMin; i < _fMax; i++) {
 		// TODO: evaluate to do this in fft class once, for multi-image support
 		float v = 10 * log10(abs(fft[(i + N) % N]) / N); // Current value, DC centered
-		if (isnan(v)) continue;
+		if (std::isnan(v)) continue;
 
 		switch (_orientation) {
 		case Orientation::Horizontal:
@@ -969,8 +969,7 @@ void QGImage::_pushFrame(bool intermediate, bool wait) {
 	_imBuffer = (char *)gdImagePngPtr(_im, &frameSize);
 
 	time_t t = std::chrono::duration_cast<std::chrono::seconds>(_started).count();
-	std::tm *tm = {};
-	tm = std::gmtime(&t);
+	std::tm *tm = std::gmtime(&t);
 	char s[21];
 	std::strftime(s, sizeof(s), "%FT%TZ", tm);
 	frameName = std::string(s) + "_" + std::to_string(_baseFreq) + "Hz.png";

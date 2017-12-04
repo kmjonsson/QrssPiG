@@ -18,9 +18,9 @@ QrssPiG::QrssPiG(const std::string &format, int sampleRate, int N, const std::st
 	_processor.reset(new QGProcessor(YAML::Load("{samplerate: " + std::to_string(sampleRate) + ", fft: " + std::to_string(N) + "}")));
 
 	if (sshHost.length()) {
-		_uploaders.push_back(std::unique_ptr<QGUploader>(QGUploader::CreateUploader(YAML::Load("{type: scp, host: " + sshHost + ", port: " + std::to_string(sshPort) + ", user: " + sshUser + ", dir: " + dir + "}"))));
+		_uploaders.push_back(QGUploader::CreateUploader(YAML::Load("{type: scp, host: " + sshHost + ", port: " + std::to_string(sshPort) + ", user: " + sshUser + ", dir: " + dir + "}")));
 	} else {
-		_uploaders.push_back(std::unique_ptr<QGUploader>(QGUploader::CreateUploader(YAML::Load("{type: local, dir: " + dir + "}"))));
+		_uploaders.push_back(QGUploader::CreateUploader(YAML::Load("{type: local, dir: " + dir + "}")));
 	}
 }
 
@@ -56,8 +56,8 @@ std::cout << "Configuring output" << std::endl;
 
 std::cout << "Configuring upload" << std::endl;
 	if (config["upload"]) {
-		if (config["upload"].IsMap()) _uploaders.push_back(std::move(QGUploader::CreateUploader(config["upload"])));
-		else if (config["upload"].IsSequence()) for (YAML::const_iterator it = config["upload"].begin(); it != config["upload"].end(); it++) _uploaders.push_back(std::move(QGUploader::CreateUploader(*it)));
+		if (config["upload"].IsMap()) _uploaders.push_back(QGUploader::CreateUploader(config["upload"]));
+		else if (config["upload"].IsSequence()) for (YAML::const_iterator it = config["upload"].begin(); it != config["upload"].end(); it++) _uploaders.push_back(QGUploader::CreateUploader(*it));
 		else throw std::runtime_error("YAML: upload must be a map or a sequence");
 	}
 
@@ -69,7 +69,7 @@ QrssPiG::~QrssPiG() {
 
 void QrssPiG::run() {
 	_inputDevice->setCb(std::bind(&QGProcessor::addIQ, _processor, _1), _processor->chunkSize());
-	_processor->setCb(std::bind(&QGImage::addLine, _image, _1));
+	_processor->addCb(std::bind(&QGImage::addLine, _image, _1));
 	for (auto&& uploader: _uploaders) _image->addCb(std::bind(&QGUploader::push, uploader, _1, _2, _3, _4, _5));
 
 	std::cout << "Run" << std::endl;
