@@ -1,5 +1,6 @@
 #include "QrssPiG.h"
 
+#include <chrono>
 #include <stdexcept>
 #include <string>
 
@@ -93,4 +94,34 @@ void QrssPiG::run() {
 void QrssPiG::stop() {
 	std::cout << "Stop" << std::endl;
 	_inputDevice->stop();
+}
+
+class ProcessingTest {
+public:
+	void run() {
+		std::unique_ptr<QGProcessor> processor(new QGProcessor(YAML::Load("{input: {samplerate: 20000000}, processing: {samplerate: 6000, chunksize: 32, fft: 16484, overlap: 0}}")));
+		processor->addCb(std::bind(&ProcessingTest::cb, this, _1));
+
+		std::vector<std::complex<float>> iq;
+		iq.resize(32);
+
+		std::chrono::milliseconds started = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+
+		for (unsigned int i = 0; i < 10000000; i+=32) {
+			processor->addIQ(&iq[0]);
+		}
+
+		std::chrono::milliseconds stopped = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+
+
+		std::cout << (stopped - started).count() << " " << (10000. / (stopped - started).count()) << "MS/s" << std::endl;
+	};
+
+	void cb(const std::complex<float>* fft) {
+	};
+};
+
+void QrssPiG::testProcessing() {
+	ProcessingTest t;
+	t.run();
 }

@@ -23,6 +23,8 @@ public:
 	void run();
 	void stop();
 
+	static void testProcessing();
+
 private:
 	std::shared_ptr<QGInputDevice> _inputDevice;
 	std::shared_ptr<QGProcessor> _processor;

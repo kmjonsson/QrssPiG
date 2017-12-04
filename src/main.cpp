@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
 		options_description desc{"Options"};
 		desc.add_options()
 		("help,h", "Help screen")
+		("test,t", "Test")
 		("listmodules,m", "List modules")
 		("listdevices,l", "List devices")
 		("configfile,c", value<std::string>(), "Config file")
@@ -33,12 +34,17 @@ int main(int argc, char *argv[]) {
 		variables_map vm;
 		store(parse_command_line(argc, argv, desc), vm);
 
-		bool stop = false;
-
 		if (vm.count("help")) {
 			std::cout << desc << std::endl;
-			stop = true;
+			exit(0);
 		}
+
+		if (vm.count("test")) {
+			QrssPiG::testProcessing();
+			exit(0);
+		}
+
+		bool stop = false;
 
 		if (vm.count("listmodules")) {
 			QrssPiG::listModules();
