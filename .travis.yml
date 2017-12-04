@@ -16,6 +16,7 @@ addons:
       - libgd2-noxpm-dev
       - libfreetype6-dev
       - libasound-dev
+      - gnuradio-dev
       - gr-osmosdr
       - libhackrf-dev
       - librtlsdr-dev
