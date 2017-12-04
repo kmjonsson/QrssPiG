@@ -1,5 +1,6 @@
 #include "QrssPiG.h"
 
+#include <iomanip>
 #include <stdexcept>
 #include <string>
 
@@ -22,8 +23,8 @@ void QrssPiG::listDevices() {
 
   	std::cout << "Available input devices:" << std::endl;
 	for (const auto& m: devices) {
-		if (m.second.size()) for (const auto &d: m.second) std::cout << "\t" << m.first << ":\t" << d << std::endl;
-		else std::cout << "\t" << m.first << ":\tNo device found" << std::endl;
+		if (m.second.size()) for (const auto &d: m.second) std::cout << "\t" << std::left << std::setw(12) << std::string(m.first + ":") << d << std::endl;
+		else std::cout << "\t" << std::left << std::setw(12) << std::string(m.first + ":") << "No device found" << std::endl;
 	}
 }
 
