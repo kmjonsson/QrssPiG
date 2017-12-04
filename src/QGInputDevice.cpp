@@ -37,6 +37,63 @@
 #include "QGInputRtlSdr.h"
 #endif // HAVE_LIBRTLSDR
 
+std::vector<std::string> QGInputDevice::listModules() {
+    std::vector<std::string> modules;
+
+    modules.push_back("File");
+#ifdef HAVE_LIBAIRSPY
+    modules.push_back("AirSpy");
+#endif //HAVE_LIBAIRSPY
+#ifdef HAVE_LIBAIRSPYHF
+    modules.push_back("AirSpyHF+");
+#endif //HAVE_LIBAIRSPYHF
+#ifdef HAVE_LIBALSA
+    modules.push_back("Alsa");
+#endif //HAVE_LIBALSA
+#ifdef HAVE_LIBGROSMOSDR
+    modules.push_back("GROsmoSdr");
+#endif //HAVE_LIBGROSMOSDR
+#ifdef HAVE_LIBHACKRF
+    modules.push_back("HackRF");
+#endif //HAVE_LIBHACKRF
+#ifdef HAVE_LIBLIMESUITE
+    modules.push_back("LimeSdr");
+#endif //HAVE_LIBLIMESUITE
+#ifdef HAVE_LIBRTLSDR
+    modules.push_back("RtlSdr");
+#endif //HAVE_LIBRTLSDR
+
+    return modules;
+}
+
+std::vector<std::pair<std::string, std::vector<std::string>>> QGInputDevice::listDevices() {
+    std::vector<std::pair<std::string, std::vector<std::string>>> devices;
+
+#ifdef HAVE_LIBAIRSPY
+    devices.push_back(std::make_pair("AirSpy", QGInputAirSpy::listDevices()));
+#endif //HAVE_LIBAIRSPY
+#ifdef HAVE_LIBAIRSPYHF
+    devices.push_back(std::make_pair("AirSpyHF+", QGInputAirSpyHF::listDevices()));
+#endif //HAVE_LIBAIRSPYHF
+#ifdef HAVE_LIBALSA
+    devices.push_back(std::make_pair("Alsa", QGInputAlsa::listDevices()));
+#endif //HAVE_LIBALSA
+#ifdef HAVE_LIBGROSMOSDR
+    devices.push_back(std::make_pair("GROsmoSdr", QGInputGROsmoSdr::listDevices()));
+#endif //HAVE_LIBGROSMOSDR
+#ifdef HAVE_LIBHACKRF
+    devices.push_back(std::make_pair("HackRF", QGInputHackRF::listDevices()));
+#endif //HAVE_LIBHACKRF
+#ifdef HAVE_LIBLIMESUITE
+    devices.push_back(std::make_pair("LimeSdr", QGInputLime::listDevices()));
+#endif //HAVE_LIBLIMESUITE
+#ifdef HAVE_LIBRTLSDR
+    devices.push_back(std::make_pair("RtlSdr", QGInputRtlSdr::listDevices()));
+#endif //HAVE_LIBRTLSDR
+
+    return devices;
+}
+
 QGInputDevice::QGInputDevice(const YAML::Node &config) {
     _sampleRate = 48000;
     _baseFreq = 0;
@@ -108,47 +165,6 @@ void QGInputDevice::run() {
 void QGInputDevice::stop() {
     // Called from signal handler, only do signal handler safe stuff here !
     _running = false;
-}
-
-void QGInputDevice::ListDevices() {
-    std::vector<std::string> list;
-
-    std::cout << "Available input devices:" << std::endl;
-#ifdef HAVE_LIBAIRSPY
-    list = QGInputAirSpy::listDevices();
-    if (list.size())
-	    for (auto &s: list) std::cout << "AirSpy:\t\t" << s << std::endl;
-#endif //HAVE_LIBAIRSPY
-#ifdef HAVE_LIBAIRSPYHF
-    list = QGInputAirSpyHF::listDevices();
-    if (list.size())
-    for (auto &s: list) std::cout << "AirSpyHF:\t" << s << std::endl;
-#endif //HAVE_LIBAIRSPYHF
-#ifdef HAVE_LIBALSA
-    list = QGInputAlsa::listDevices();
-    if (list.size())
-	    for (auto &s: list) std::cout << "Alsa:\t\t" << s << std::endl;
-#endif //HAVE_LIBALSA
-#ifdef HAVE_LIBGROSMOSDR
-    list = QGInputGROsmoSdr::listDevices();
-    if (list.size())
-	    for (auto &s: list) std::cout << "GROsmoSdr:\t" << s << std::endl;
-#endif //HAVE_LIBGROSMOSDR
-#ifdef HAVE_LIBHACKRF
-    list = QGInputHackRF::listDevices();
-    if (list.size())
-	    for (auto &s: list) std::cout << "HackRf:\t\t" << s << std::endl;
-#endif //HAVE_LIBHACKRF
-#ifdef HAVE_LIBLIMESUITE
-    list = QGInputLime::listDevices();
-    if (list.size())
-	    for (auto &s: list) std::cout << "Lime:\t\t" << s << std::endl;
-#endif //HAVE_LIBLIMESUITE
-#ifdef HAVE_LIBRTLSDR
-    list = QGInputRtlSdr::listDevices();
-    if (list.size())
-	    for (auto &s: list) std::cout << "RtlSdr:\t\t" << s << std::endl;
-#endif //HAVE_LIBRTLSDR
 }
 
 std::unique_ptr<QGInputDevice> QGInputDevice::CreateInputDevice(const YAML::Node &config) {
