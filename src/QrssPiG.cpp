@@ -98,8 +98,10 @@ void QrssPiG::stop() {
 
 class ProcessingTest {
 public:
-	void run() {
-		std::unique_ptr<QGProcessor> processor(new QGProcessor(YAML::Load("{input: {samplerate: 20000000}, processing: {samplerate: 6000, chunksize: 32, fft: 16484, overlap: 0}}")));
+	void run(unsigned int fftSize) {
+		_processed = 0;
+
+		std::unique_ptr<QGProcessor> processor(new QGProcessor(YAML::Load("{input: {samplerate: 8000000}, processing: {samplerate: 8000000, chunksize: 32, fft: " + std::to_string(fftSize) + ", overlap: 0}}")));
 		processor->addCb(std::bind(&ProcessingTest::cb, this, _1));
 
 		std::vector<std::complex<float>> iq;
@@ -107,21 +109,31 @@ public:
 
 		std::chrono::milliseconds started = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 
-		for (unsigned int i = 0; i < 10000000; i+=32) {
+		for (unsigned int i = 0; i < 10 * fftSize; i+=32) {
 			processor->addIQ(&iq[0]);
+			_processed += 32;
 		}
 
 		std::chrono::milliseconds stopped = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 
-
-		std::cout << (stopped - started).count() << " " << (10000. / (stopped - started).count()) << "MS/s" << std::endl;
+		std::chrono::milliseconds delta = stopped - started;
+		if (delta.count() == 0) delta = std::chrono::milliseconds(1);
+		std::cout << _processed << " samples processed in " << delta.count() << "ms: " << (_processed / (1000. * delta.count())) << "MS/s" << std::endl;
 	};
 
 	void cb(const std::complex<float>* fft) {
+		(void)fft;
 	};
+
+private:
+	unsigned int _processed;
 };
 
 void QrssPiG::testProcessing() {
 	ProcessingTest t;
-	t.run();
+
+	for (unsigned int i = 8192; i <= 16 * 1024 * 1024; i *= 2) {
+		std::cout << "Testing fft size " << i << std::endl;
+		t.run(i);
+	}
 }
