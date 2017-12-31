@@ -19,8 +19,12 @@ RUN apt-get update \
 
 RUN apt-get update \
   && apt-get install -y \
+    gr-osmosdr \
+    libairspy-dev \
+    libairspyhf-dev \
     libasound-dev \
     libhackrf-dev \
+    liblimesuite-dev \
     librtlsdr-dev
 
 RUN apt-get update \
