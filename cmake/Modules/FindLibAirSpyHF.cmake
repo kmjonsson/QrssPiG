@@ -5,10 +5,10 @@
 
 include(LibFindMacros)
 
-find_path(LIBAIRSPYHF_INCLUDE_DIR NAMES libairspyhf/airspyhf.h)
+find_path(LibAirSpyHF_INCLUDE_DIR NAMES libairspyhf/airspyhf.h)
 
 # Search first where lib is installed from source, then system one
-find_library(LIBAIRSPYHF_LIBRARY NAMES libairspyhf airspyhf PATHS /usr/local/lib /usr/lib NO_DEFAULT_PATH)
-find_library(LIBAIRSPYHF_LIBRARY NAMES libairspyhf airspyhf)
+find_library(LibAirSpyHF_LIBRARY NAMES libairspyhf airspyhf PATHS /usr/local/lib /usr/lib NO_DEFAULT_PATH)
+find_library(LibAirSpyHF_LIBRARY NAMES libairspyhf airspyhf)
 
-libfind_process(LIBAIRSPYHF)
+libfind_process(LibAirSpyHF)

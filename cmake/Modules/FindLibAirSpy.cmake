@@ -5,10 +5,10 @@
 
 include(LibFindMacros)
 
-find_path(LIBAIRSPY_INCLUDE_DIR NAMES libairspy/airspy.h)
+find_path(LibAirSpy_INCLUDE_DIR NAMES libairspy/airspy.h)
 
 # Search first where lib is installed from source, then system one
-find_library(LIBAIRSPY_LIBRARY NAMES libairspy airspy PATHS /usr/local/lib /usr/lib NO_DEFAULT_PATH)
-find_library(LIBAIRSPY_LIBRARY NAMES libairspy airspy)
+find_library(LibAirSpy_LIBRARY NAMES libairspy airspy PATHS /usr/local/lib /usr/lib NO_DEFAULT_PATH)
+find_library(LibAirSpy_LIBRARY NAMES libairspy airspy)
 
-libfind_process(LIBAIRSPY)
+libfind_process(LibAirSpy)
