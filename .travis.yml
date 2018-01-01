@@ -30,6 +30,7 @@ before_install:
   - ./scripts/install-libairspy.sh
   - ./scripts/install-libairspyhf+.sh
   - ./scripts/install-libhackrf.sh
+  - ./scripts/install-liblimesuite.sh
 
 script:
   - mkdir -p build && cd build && cmake .. && cmake --build .
