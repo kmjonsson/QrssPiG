@@ -12,7 +12,7 @@ using std::placeholders::_5;
 
 void QrssPiG::listModules() {
 	std::cout << "Available input modules:" << std::endl;
-	for (const auto&m: QGInputDevice::listModules()) std::cout << "\t" << m << std::endl;
+	for (const auto&m: QGInputDevice::listModules()) std::cout << "\t" << std::left << std::setw(12) << std::string(m.first + ":") << m.second << std::endl;
 
 	std::cout << "Available upload modules:" << std::endl;
 	for (const auto&m: QGUploader::listModules()) std::cout << "\t" << m << std::endl;

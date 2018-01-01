@@ -37,30 +37,30 @@
 #include "QGInputRtlSdr.h"
 #endif // HAVE_LIBRTLSDR
 
-std::vector<std::string> QGInputDevice::listModules() {
-    std::vector<std::string> modules;
+std::vector<std::pair<std::string, std::string>> QGInputDevice::listModules() {
+    std::vector<std::pair<std::string, std::string>> modules;
 
-    modules.push_back("StdIn");
+    modules.push_back(std::make_pair("StdIn", ""));
 #ifdef HAVE_LIBAIRSPY
-    modules.push_back("AirSpy");
+    modules.push_back(std::make_pair("AirSpy", QGInputAirSpy::moduleInfo()));
 #endif //HAVE_LIBAIRSPY
 #ifdef HAVE_LIBAIRSPYHF
-    modules.push_back("AirSpyHF+");
+    modules.push_back(std::make_pair("AirSpyHF+", QGInputAirSpyHF::moduleInfo()));
 #endif //HAVE_LIBAIRSPYHF
 #ifdef HAVE_LIBALSA
-    modules.push_back("Alsa");
+    modules.push_back(std::make_pair("Alsa", ""));
 #endif //HAVE_LIBALSA
 #ifdef HAVE_LIBGROSMOSDR
-    modules.push_back("GROsmoSdr");
+    modules.push_back(std::make_pair("GROsmoSdr", ""));
 #endif //HAVE_LIBGROSMOSDR
 #ifdef HAVE_LIBHACKRF
-    modules.push_back("HackRF");
+    modules.push_back(std::make_pair("HackRF", QGInputHackRF::moduleInfo()));
 #endif //HAVE_LIBHACKRF
 #ifdef HAVE_LIBLIMESUITE
-    modules.push_back("LimeSdr");
+    modules.push_back(std::make_pair("LimeSdr", QGInputLime::moduleInfo()));
 #endif //HAVE_LIBLIMESUITE
 #ifdef HAVE_LIBRTLSDR
-    modules.push_back("RtlSdr");
+    modules.push_back(std::make_pair("RtlSdr", ""));
 #endif //HAVE_LIBRTLSDR
 
     return modules;

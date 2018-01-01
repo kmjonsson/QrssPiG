@@ -6,6 +6,7 @@
 
 class QGInputAirSpy: public QGInputDevice {
 public:
+	static std::string moduleInfo();
 	static std::vector<std::string> listDevices();
 
 	QGInputAirSpy(const YAML::Node &config);

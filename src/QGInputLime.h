@@ -6,6 +6,7 @@
 
 class QGInputLime: public QGInputDevice {
 public:
+	static std::string moduleInfo();
 	static std::vector<std::string> listDevices();
 
 	QGInputLime(const YAML::Node &config);

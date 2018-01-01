@@ -3,6 +3,10 @@
 #include <iostream>
 #include <stdexcept>
 
+std::string QGInputLime::moduleInfo() {
+	return std::string("Version ") + LMS_GetLibraryVersion();
+}
+
 std::vector<std::string> QGInputLime::listDevices() {
 	std::vector<std::string> list;
 

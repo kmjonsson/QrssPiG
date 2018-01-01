@@ -10,7 +10,7 @@
 
 class QGInputDevice {
 public:
-	static std::vector<std::string> listModules();
+	static std::vector<std::pair<std::string, std::string>> listModules();
 	static std::vector<std::pair<std::string, std::vector<std::string>>> listDevices();
 
 protected:

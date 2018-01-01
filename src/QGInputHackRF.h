@@ -6,6 +6,7 @@
 
 class QGInputHackRF: public QGInputDevice {
 public:
+	static std::string moduleInfo();
 	static std::vector<std::string> listDevices();
 
 	QGInputHackRF(const YAML::Node &config);

@@ -4,6 +4,10 @@
 #include <iostream>
 #include <stdexcept>
 
+std::string QGInputHackRF::moduleInfo() {
+	return std::string("Version ") + hackrf_library_version() + " release: " + hackrf_library_release();
+}
+
 std::vector<std::string> QGInputHackRF::listDevices() {
 	std::vector<std::string> list;
 	hackrf_device* device;
