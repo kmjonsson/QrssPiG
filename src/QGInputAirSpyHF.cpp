@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#define MAX_DEVICE 10
+
 std::string QGInputAirSpyHF::moduleInfo() {
 	airspyhf_lib_version_t v;
 	airspyhf_lib_version(&v);
@@ -11,6 +13,11 @@ std::string QGInputAirSpyHF::moduleInfo() {
 
 std::vector<std::string> QGInputAirSpyHF::listDevices() {
 	std::vector<std::string> list;
+
+	uint64_t serials[MAX_DEVICE];
+	int numDevices = airspyhf_list_devices(serials, MAX_DEVICE);
+
+	for (int i = 0; i < numDevices; i++) list.push_back(std::string("Serial: ") + std::to_string(serials[i]));
 
 	return list;
 }

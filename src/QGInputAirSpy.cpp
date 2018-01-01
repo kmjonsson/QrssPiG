@@ -12,6 +12,8 @@ std::string QGInputAirSpy::moduleInfo() {
 std::vector<std::string> QGInputAirSpy::listDevices() {
 	std::vector<std::string> list;
 
+	list.push_back("Device listing not available");
+
 	return list;
 }
 
