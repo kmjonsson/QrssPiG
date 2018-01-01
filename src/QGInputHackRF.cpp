@@ -5,7 +5,8 @@
 #include <stdexcept>
 
 std::string QGInputHackRF::moduleInfo() {
-	return std::string("Version ") + hackrf_library_version() + " release: " + hackrf_library_release();
+	return "";
+	//return std::string("Version ") + hackrf_library_version() + " release: " + hackrf_library_release();
 }
 
 std::vector<std::string> QGInputHackRF::listDevices() {
