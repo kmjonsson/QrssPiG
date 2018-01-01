@@ -15,4 +15,6 @@ public:
 private:
 	void _startDevice();
 	void _stopDevice();
+
+	struct airspy_device *_device;
 };

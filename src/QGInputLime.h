@@ -15,4 +15,6 @@ public:
 private:
 	void _startDevice();
 	void _stopDevice();
+
+	lms_device_t *_device;
 };
