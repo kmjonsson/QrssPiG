@@ -6,6 +6,10 @@
 std::vector<std::string> QGInputLime::listDevices() {
 	std::vector<std::string> list;
 
+	lms_info_str_t *deviceList = nullptr;
+	int numDevices = LMS_GetDeviceList(deviceList);
+	for (int i = 0; i < numDevices; i++) list.push_back(deviceList[i]);
+
 	return list;
 }
 
