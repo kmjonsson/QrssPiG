@@ -5,6 +5,8 @@
 
 include(LibFindMacros)
 
+libfind_package(LibAirSpy LibUSB1)
+
 find_path(LibAirSpy_INCLUDE_DIR NAMES libairspy/airspy.h)
 
 # Search first where lib is installed from source, then system one

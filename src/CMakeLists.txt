@@ -87,7 +87,7 @@ endif (LibCurl_FOUND)
 list(APPEND QRSSPIG_SOURCES main.cpp QrssPiG.cpp QGInputDevice.cpp QGInputStdIn.cpp QGProcessor.cpp QGImage.cpp QGUploader.cpp QGUploaderLocal.cpp)
 
 if (LibAirSpy_FOUND)
-	list(APPEND QRSSPIG_SOURCES QGInputAirSpy.cpp)
+	list(APPEND QRSSPIG_SOURCES QGInputAirSpy.cpp airspy_list_devices.cpp)
 endif (LibAirSpy_FOUND)
 
 if (LibAirSpyHF_FOUND)

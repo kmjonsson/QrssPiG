@@ -1,5 +1,7 @@
 #include "QGInputAirSpy.h"
 
+#include "airspy_list_devices.h"
+
 #include <iostream>
 #include <stdexcept>
 
@@ -12,7 +14,11 @@ std::string QGInputAirSpy::moduleInfo() {
 std::vector<std::string> QGInputAirSpy::listDevices() {
 	std::vector<std::string> list;
 
-	list.push_back("Device listing not available");
+	int numDevices = airspy_list_devices(nullptr, 0);
+	std::unique_ptr<uint64_t[]> serials(new uint64_t[numDevices]);
+	airspy_list_devices(serials.get(), numDevices);
+
+	for (int i = 0; i < numDevices; i++) list.push_back(std::string("Serial: ") + std::to_string(serials[i]));
 
 	return list;
 }
