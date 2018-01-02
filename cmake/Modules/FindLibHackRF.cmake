@@ -12,3 +12,10 @@ find_library(LibHackRF_LIBRARY NAMES libhackrf hackrf PATHS /usr/local/lib /usr/
 find_library(LibHackRF_LIBRARY NAMES libhackrf hackrf)
 
 libfind_process(LibHackRF)
+
+include(CheckSymbolExists)
+
+set(CMAKE_REQUIRED_INCLUDES ${LibHackRF_INCLUDE_DIR})
+set(CMAKE_REQUIRED_LIBRARIES ${LibHackRF_LIBRARY})
+
+CHECK_SYMBOL_EXISTS(hackrf_library_version libhackrf/hackrf.h LibHackRF_HAS_hackrf_library_version)

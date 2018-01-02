@@ -1,12 +1,17 @@
 #include "QGInputHackRF.h"
 
+#include "Config.h"
+
 #include <chrono>
 #include <iostream>
 #include <stdexcept>
 
 std::string QGInputHackRF::moduleInfo() {
+#ifdef HAVE_LIBHACKRF_LIBRARY_VERSION
+	return std::string("Version ") + hackrf_library_version() + " release: " + hackrf_library_release();
+#else
 	return "";
-	//return std::string("Version ") + hackrf_library_version() + " release: " + hackrf_library_release();
+#endif // HAVE_LIBHACKRF_LIBRARY_VERSION
 }
 
 std::vector<std::string> QGInputHackRF::listDevices() {
