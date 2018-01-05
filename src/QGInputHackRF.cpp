@@ -16,6 +16,8 @@ std::string QGInputHackRF::moduleInfo() {
 
 std::vector<std::string> QGInputHackRF::listDevices() {
 	std::vector<std::string> list;
+
+#ifdef HAVE_LIBHACKRF_DEVICE_LIST
 	hackrf_device* device;
 	int r = hackrf_init();
 
@@ -41,6 +43,9 @@ std::vector<std::string> QGInputHackRF::listDevices() {
 	hackrf_device_list_free(l);
 
 	hackrf_exit();
+#else
+	list.push_back("Device listing not supported by this libhackrf version");
+#endif // HAVE_LIBHACKRF_DEVICE_LIST
 
 	return list;
 }

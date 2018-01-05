@@ -15,7 +15,8 @@ libfind_process(LibHackRF)
 
 include(CheckSymbolExists)
 
-set(CMAKE_REQUIRED_INCLUDES ${LibHackRF_INCLUDE_DIR})
-set(CMAKE_REQUIRED_LIBRARIES ${LibHackRF_LIBRARY})
+set(CMAKE_REQUIRED_INCLUDES ${LibHackRF_INCLUDE_DIRS})
+set(CMAKE_REQUIRED_LIBRARIES ${LibHackRF_LIBRARIES})
 
 CHECK_SYMBOL_EXISTS(hackrf_library_version libhackrf/hackrf.h LibHackRF_HAS_hackrf_library_version)
+CHECK_SYMBOL_EXISTS(hackrf_device_list libhackrf/hackrf.h LibHackRF_HAS_hackrf_device_list)
