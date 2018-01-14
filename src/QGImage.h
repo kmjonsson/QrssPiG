@@ -11,16 +11,17 @@
 
 class QGImage {
 public:
-	enum class Orientation { Horizontal, Vertical };
-
 	QGImage(const YAML::Node &config, unsigned int index);
 	~QGImage();
 
-	void addCb(std::function<void(const std::string&, const char*, int, bool, bool)>cb);
+	void addCb(std::function<void(const std::string&, const std::string&, const char*, int, bool, bool)>cb);
 
 	void addLine(const std::complex<float> *fft);
 
 private:
+	enum class Orientation { Horizontal, Vertical };
+	enum class Format { PNG, JPG };
+
 	void _init();
 	void _new(bool incrementTime = true);
 	void _free();
@@ -38,6 +39,7 @@ private:
 	int _db2Color(float v);
 
 	void _pushFrame(bool intermediate = false, bool wait = false);
+	void _formatFilename(std::string &str);
 
 	std::string _levelBar(float v);
 
@@ -49,6 +51,9 @@ private:
 	long int _sampleRate;
 	long int _baseFreq;
 	long int _baseFreqCorrected;
+
+	std::string _fileName;
+	Format _format;
 
 	std::string _title;
 	std::vector<std::string> _subtitles;
@@ -123,5 +128,5 @@ private:
 	int _timeLabelWidth;
 	int _timeLabelHeight;
 
-	std::vector<std::function<void(const std::string&, const char*, int, bool, bool)>> _cbs;
+	std::vector<std::function<void(const std::string&, const std::string&, const char*, int, bool, bool)>> _cbs;
 };
