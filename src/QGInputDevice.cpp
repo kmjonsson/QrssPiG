@@ -37,6 +37,10 @@
 #include "QGInputRtlSdr.h"
 #endif // HAVE_LIBRTLSDR
 
+#ifdef HAVE_LIBSDRPLAY
+#include "QGInputSdrPlay.h"
+#endif // HAVE_LIBSDRPLAY
+
 std::vector<std::pair<std::string, std::string>> QGInputDevice::listModules() {
     std::vector<std::pair<std::string, std::string>> modules;
 
@@ -62,6 +66,9 @@ std::vector<std::pair<std::string, std::string>> QGInputDevice::listModules() {
 #ifdef HAVE_LIBRTLSDR
     modules.push_back(std::make_pair("RtlSdr", ""));
 #endif //HAVE_LIBRTLSDR
+#ifdef HAVE_LIBSDRPLAY
+    modules.push_back(std::make_pair("SdrPlay", QGInputSdrPlay::moduleInfo()));
+#endif //HAVE_LIBSDRPLAY
 
     return modules;
 }
@@ -90,6 +97,9 @@ std::vector<std::pair<std::string, std::vector<std::string>>> QGInputDevice::lis
 #ifdef HAVE_LIBRTLSDR
     devices.push_back(std::make_pair("RtlSdr", QGInputRtlSdr::listDevices()));
 #endif //HAVE_LIBRTLSDR
+#ifdef HAVE_LIBSDRPLAY
+    devices.push_back(std::make_pair("SdrPlay", QGInputSdrPlay::listDevices()));
+#endif //HAVE_LIBSDRPLAY
 
     return devices;
 }
@@ -213,6 +223,13 @@ std::unique_ptr<QGInputDevice> QGInputDevice::CreateInputDevice(const YAML::Node
 #else
         throw std::runtime_error(std::string("QGInputDevice: rtlsdr support not builtin into this build"));
 #endif //HAVE_LIBRTLSDR
+    } else if (config["type"].as<std::string>().compare("sdrplay") == 0) {
+#ifdef HAVE_LIBSDRPLAY
+        std::cout << "Input type sdrplay" << std::endl;
+        return std::unique_ptr<QGInputDevice>(new QGInputSdrPlay(config));
+#else
+        throw std::runtime_error(std::string("QGInputDevice: sdrplay support not builtin into this build"));
+#endif //HAVE_LIBSDRPLAY
     } else {
         throw std::runtime_error(std::string("QGInputDevice: unknown type ") + config["type"].as<std::string>());
     }

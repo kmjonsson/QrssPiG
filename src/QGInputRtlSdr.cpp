@@ -19,7 +19,7 @@ std::vector<std::string> QGInputRtlSdr::listDevices() {
 		std::unique_ptr<char[]> serial(new char[256]);
 		rtlsdr_get_device_usb_strings(i, manufacturer.get(), product.get(), serial.get());
 		const char *name = rtlsdr_get_device_name(i);
-		list.push_back(std::to_string(i) + "\t" + manufacturer.get() + " " + product.get() + " - " + name + " (serial: " + serial.get() + ")");
+		list.push_back(std::to_string(i) + ": " + manufacturer.get() + " " + product.get() + " - " + name + " (serial: " + serial.get() + ")");
 	}
 #else
 	list.push_back("Device listing not supported by this librtlsdr version");

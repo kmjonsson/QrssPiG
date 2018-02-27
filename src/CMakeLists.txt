@@ -59,6 +59,11 @@ if (LibRtlSdr_FOUND)
 	include_directories(${LibRtlSdr_INCLUDE_DIRS})
 endif (LibRtlSdr_FOUND)
 
+find_package(LibSdrPlay)
+if (LibSdrPlay_FOUND)
+	include_directories(${LibSdrPlay_INCLUDE_DIRS})
+endif (LibSdrPlay_FOUND)
+
 # Look for optional processing libraries
 find_package(LibLiquidSDR)
 if (LibLiquidSDR_FOUND)
@@ -113,6 +118,10 @@ endif (LibLimeSuite_FOUND)
 if (LibRtlSdr_FOUND)
 	list(APPEND QRSSPIG_SOURCES QGInputRtlSdr.cpp)
 endif (LibRtlSdr_FOUND)
+
+if (LibSdrPlay_FOUND)
+	list(APPEND QRSSPIG_SOURCES QGInputSdrPlay.cpp)
+endif (LibSdrPlay_FOUND)
 
 if (LibSSH_FOUND)
 	list(APPEND QRSSPIG_SOURCES QGUploaderSCP.cpp)
@@ -191,6 +200,11 @@ if (LibRtlSdr_FOUND)
 		set(HAVE_LIBRTLSDR_TUNER_BANDWITH 1)
 	endif (LibRtlSdr_HAS_rtlsdr_set_tuner_bandwidth)
 endif (LibRtlSdr_FOUND)
+
+if (LibSdrPlay_FOUND)
+	target_link_libraries(qrsspig ${LibSdrPlay_LIBRARIES})
+	set(HAVE_LIBSDRPLAY 1)
+endif (LibSdrPlay_FOUND)
 
 if (LibLiquidSDR_FOUND)
 	target_link_libraries(qrsspig ${LibLiquidSDR_LIBRARIES})

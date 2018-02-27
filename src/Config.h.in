@@ -15,6 +15,7 @@
 #cmakedefine HAVE_LIBRTLSDR
 #cmakedefine HAVE_LIBRTLSDR_DEVICE_LIST
 #cmakedefine HAVE_LIBRTLSDR_TUNER_BANDWITH
+#cmakedefine HAVE_LIBSDRPLAY
 #cmakedefine HAVE_LIBRTFILTER
 #cmakedefine HAVE_LIBLIQUIDSDR
 #cmakedefine HAVE_LIBSSH
